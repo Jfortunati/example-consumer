@@ -20,7 +20,7 @@ describe('API Pact test', () => {
       // const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
 
       // Uncomment to see this fail
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: '29.00'}
+      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: '29.99'}
       
       // Uncomment to see this fail
       // const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: 30.0, newField: 22}
