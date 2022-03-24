@@ -43,7 +43,6 @@ class ProductPage extends React.Component {
         <p>ID: {this.state.product.id}</p>
         <p>Name: {this.state.product.name}</p>
         <p>Type: {this.state.product.type}</p>
-        <p>Price: {this.state.product.price}</p>
       </div>
     );
 

@@ -14,7 +14,6 @@ const productPropTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
   }).isRequired
 };
 
@@ -23,7 +22,6 @@ function ProductTableRow(props) {
     <tr>
       <td>{props.product.name}</td>
       <td>{props.product.type}</td>
-      <td>{props.product.price}</td>
       <td>
         <Link className="btn btn-link" to={{
           pathname: "/products/" + props.product.id,
@@ -47,7 +45,6 @@ function ProductTable(props) {
       <tr>
         <th>Name</th>
         <th>Type</th>
-        <th>Price</th>
         <th/>
       </tr>
       </thead>
@@ -101,7 +98,6 @@ class App extends React.Component {
         p.id.toLowerCase().includes(search)
         || p.name.toLowerCase().includes(search)
         || p.type.toLowerCase().includes(search)
-        || p.price.toLowerCase().includes(search)
       )
     };
     this.setState((s) => {
