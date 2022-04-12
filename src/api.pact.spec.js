@@ -5,7 +5,7 @@ import { Product } from './product';
 const { eachLike, like, regex } = Matchers;
 
 const mockProvider = new Pact({
-  consumer: 'pactflow-example-consumer',
+  consumer: 'pactflow-example-consumer2',
   provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider',
 });
 
