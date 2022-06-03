@@ -5,8 +5,8 @@ import { Product } from './product';
 const { eachLike, like, regex } = Matchers;
 
 const mockProvider = new Pact({
-  consumer: 'pactflow-example-consumer',
-  provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider',
+  consumer: 'pactflow-example-consumer-6-3',
+  provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider-6-3',
 });
 
 describe('API Pact test', () => {
@@ -17,13 +17,13 @@ describe('API Pact test', () => {
   describe('retrieving a product', () => {
     test('ID 10 exists', async () => {
       // Arrange
-      //const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
+      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
 
       // Uncomment to see this fail
       //const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: '29.00'}
       
       // Uncomment to see this fail
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: 30.0, color: "orange"}
+      // const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: 30.0, color: "orange"}
 
       await mockProvider.addInteraction({
         state: 'a product with ID 10 exists',
