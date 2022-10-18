@@ -5,7 +5,7 @@ import { Product } from './product';
 const { eachLike, like, regex } = Matchers;
 
 const mockProvider = new Pact({
-  consumer: 'pactflow-example-consumer-6-3',
+  consumer: 'pactflow-example-consumer-10-18',
   provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider-6-3',
 });
 
@@ -17,10 +17,10 @@ describe('API Pact test', () => {
   describe('retrieving a product', () => {
     test('ID 10 exists', async () => {
       // Arrange
-      // const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
+      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
 
       // Uncomment to see this fail
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: '29.00'}
+      // const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: '29.00'}
       
       // Uncomment to see this fail
       // const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
