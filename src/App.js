@@ -9,35 +9,35 @@ import {withRouter} from "react-router-dom";
 import API from "./api";
 import PropTypes from 'prop-types';
 
-const productPropTypes = {
-  product: PropTypes.shape({
+const paymentPropTypes = {
+  payment: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   }).isRequired
 };
 
-function ProductTableRow(props) {
+function PaymentTableRow(props) {
   return (
     <tr>
-      <td>{props.product.name}</td>
-      <td>{props.product.type}</td>
+      <td>{props.payment.name}</td>
+      <td>{props.payment.type}</td>
       <td>
         <Link className="btn btn-link" to={{
-          pathname: "/products/" + props.product.id,
+          pathname: "/payments/" + props.payment.id,
           state: {
-            product: props.product
+            payment: props.payment
           }
         }}>See more!</Link>
       </td>
     </tr>
   );
 }
-ProductTableRow.propTypes = productPropTypes;
+PaymentTableRow.propTypes = paymentPropTypes;
 
-function ProductTable(props) {
-  const products = props.products.map(p => (
-    <ProductTableRow key={p.id} product={p}/>
+function PaymentTable(props) {
+  const payments = props.payments.map(p => (
+    <PaymentTableRow key={p.id} payment={p}/>
   ));
   return (
     <table className="table table-striped table-hover">
@@ -49,14 +49,14 @@ function ProductTable(props) {
       </tr>
       </thead>
       <tbody>
-      {products}
+      {payments}
       </tbody>
     </table>
   );
 }
 
-ProductTable.propTypes = {
-  products: PropTypes.arrayOf(productPropTypes.product)
+PaymentTable.propTypes = {
+  payments: PropTypes.arrayOf(paymentPropTypes.payment)
 };
 
 class App extends React.Component {
@@ -66,20 +66,20 @@ class App extends React.Component {
     this.state = {
       loading: true,
       searchText: '',
-      products: [],
-      visibleProducts: []
+      payments: [],
+      visiblePayments: []
     };
     this.onSearchTextChange = this.onSearchTextChange.bind(this);
   }
 
   componentDidMount() {
-    API.getAllProducts()
+    API.getAllPayments()
       .then(r => {
         this.setState({
           loading: false,
-          products: r
+          payments: r
         });
-        this.determineVisibleProducts();
+        this.determineVisiblePayments();
       })
       .catch(e => {
         this.props.history.push({
@@ -91,10 +91,10 @@ class App extends React.Component {
       });
   }
 
-  determineVisibleProducts() {
-    const findProducts = (search) => {
+  determineVisiblePayments() {
+    const findPayments = (search) => {
       search = search.toLowerCase();
-      return this.state.products.filter(p =>
+      return this.state.payments.filter(p =>
         p.id.toLowerCase().includes(search)
         || p.name.toLowerCase().includes(search)
         || p.type.toLowerCase().includes(search)
@@ -102,7 +102,7 @@ class App extends React.Component {
     };
     this.setState((s) => {
       return {
-        visibleProducts: s.searchText ? findProducts(s.searchText) : s.products
+        visiblePayments: s.searchText ? findPayments(s.searchText) : s.payments
       }
     });
   }
@@ -111,22 +111,22 @@ class App extends React.Component {
     this.setState({
       searchText: e.target.value
     });
-    this.determineVisibleProducts()
+    this.determineVisiblePayments()
   }
 
   render() {
     return (
       <Layout>
-        <Heading text="Products" href="/"/>
+        <Heading text="Payments" href="/"/>
         <div className="form-group col-2">
-          <label className="form-label" htmlFor="input-product-search">Search</label>
-          <input id="input-product-search" className="form-input" type="text"
+          <label className="form-label" htmlFor="input-payment-search">Search</label>
+          <input id="input-payment-search" className="form-input" type="text"
                value={this.state.searchText} onChange={this.onSearchTextChange}/>
         </div>
         {
           this.state.loading ?
             <div className="loading loading-lg centered"/> :
-            <ProductTable products={this.state.visibleProducts}/>
+            <PaymentTable payments={this.state.visiblePayments}/>
         }
       </Layout>
     );
