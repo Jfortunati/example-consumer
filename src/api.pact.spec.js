@@ -5,8 +5,8 @@ import { Product } from './product';
 const { eachLike, like, regex } = Matchers;
 
 const mockProvider = new Pact({
-  consumer: 'pactflow-example-consumer',
-  provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider',
+  consumer: 'bearbank-payments-consumer',
+  provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'bearbank-payments-provider',
 });
 
 describe('API Pact test', () => {
@@ -14,23 +14,23 @@ describe('API Pact test', () => {
   afterEach(() => mockProvider.verify());
   afterAll(() => mockProvider.finalize());
 
-  describe('retrieving a product', () => {
+  describe('retrieving a payment', () => {
     test('ID 10 exists', async () => {
       // Arrange
-      //const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees'}
+      const expectedPayment = { id: '10', type: 'CREDIT_CARD', amount: '10.75', currency: 'USD'}
 
       // Uncomment to see this fail
       //const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: '29.00'}
       
       // Uncomment to see this fail
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: 30.0, color: "red"}
+      //const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', price: 30.0, color: "red"}
 
       await mockProvider.addInteraction({
-        state: 'a product with ID 10 exists',
-        uponReceiving: 'a request to get a product',
+        state: 'a payment with ID 10 exists',
+        uponReceiving: 'a request to get a payment',
         withRequest: {
           method: 'GET',
-          path: '/product/10',
+          path: '/payment/10',
           headers: {
             Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
           },
@@ -40,27 +40,27 @@ describe('API Pact test', () => {
           headers: {
             'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
           },
-          body: like(expectedProduct),
+          body: like(expectedPayment),
         },
       });
 
       // Act
       const api = new API(mockProvider.mockService.baseUrl);
-      const product = await api.getProduct('10');
+      const payment = await api.getPayment('10');
 
       // Assert - did we get the expected response
-      expect(product).toStrictEqual(new Product(expectedProduct));
+      expect(payment).toStrictEqual(new Payment(expectedPayment));
     });
 
-    test('product does not exist', async () => {
+    test('payment does not exist', async () => {
 
         // set up Pact interactions
         await mockProvider.addInteraction({
-          state: 'a product with ID 11 does not exist',
-          uponReceiving: 'a request to get a product',
+          state: 'a payment with ID 11 does not exist',
+          uponReceiving: 'a request to get a payment',
           withRequest: {
             method: 'GET',
-            path: '/product/11',
+            path: '/payment/11',
             headers: {
               'Authorization': like('Bearer 2019-01-14T11:34:18.045Z')
             }
@@ -73,20 +73,20 @@ describe('API Pact test', () => {
         const api = new API(mockProvider.mockService.baseUrl);
 
         // make request to Pact mock server
-        await expect(api.getProduct('11')).rejects.toThrow('Request failed with status code 404');
+        await expect(api.getPayment('11')).rejects.toThrow('Request failed with status code 404');
     });
   });
-  describe('retrieving products', () => {
-    test('products exists', async () => {
+  describe('retrieving payments', () => {
+    test('payments exists', async () => {
       // set up Pact interactions
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees' }
+      const expectedPayment = { id: '10', type: 'CREDIT_CARD', amount: '10.75', currency: 'USD'}
 
       await mockProvider.addInteraction({
-        state: 'products exist',
-        uponReceiving: 'a request to get all products',
+        state: 'payments exist',
+        uponReceiving: 'a request to get all payments',
         withRequest: {
           method: 'GET',
-          path: '/products',
+          path: '/payments',
           headers: {
             Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
           },
@@ -96,17 +96,17 @@ describe('API Pact test', () => {
           headers: {
             'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
           },
-          body: eachLike(expectedProduct),
+          body: eachLike(expectedPayment),
         },
       });
 
       const api = new API(mockProvider.mockService.baseUrl);
 
       // make request to Pact mock server
-      const products = await api.getAllProducts()
+      const payments = await api.getAllPayments()
 
       // assert that we got the expected response
-      expect(products).toStrictEqual([new Product(expectedProduct)]);
+      expect(payments).toStrictEqual([new Payment(expectedPayment)]);
     });
   });
 });
